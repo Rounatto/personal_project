@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoFootprint - Carbon Emission Tracker</title>
+    <link rel="stylesheet" href="personal_proj.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                <span>EcoFootprint</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Dashboard</a></li>
+                    <li><a href="#" id="insights-link">Insights</a></li>
+                    <li><a href="#" id="goals-link">Goals</a></li>
+                    <li><a href="#" id="tips-link">Tips</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <div class="summary-cards">
+            <div class="summary-card card-1">
+                <i class="fas fa-fire"></i>
+                <h3>Carbon Footprint</h3>
+                <div class="amount" id="total-footprint">4.2 t</div>
+            </div>
+            <div class="summary-card card-2">
+                <i class="fas fa-bolt"></i>
+                <h3>Energy Usage</h3>
+                <div class="amount" id="energy-usage">128 kWh</div>
+            </div>
+            <div class="summary-card card-3">
+                <i class="fas fa-car"></i>
+                <h3>Transportation</h3>
+                <div class="amount" id="transport-distance">42 km</div>
+            </div>
+        </div>
+        
+        <div class="dashboard">
+            <div class="card">
+                <h2>Add Activity</h2>
+                <p>Track your carbon emissions</p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <i class="fas fa-plus-circle" style="font-size: 80px; color: var(--primary); cursor: pointer;" id="add-activity-btn"></i>
+                </div>
+                <p>Click the plus icon to add transportation, energy usage, or consumption data.</p>
+            </div>
+            
+            <div class="card">
+                <h2>Monthly Emissions</h2>
+                <div class="chart-container">
+                    <canvas id="emissions-chart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Recent Activities</h2>
+            <div class="activities" id="activities-list">
+                <!-- Activities will be populated by JavaScript -->
+            </div>
+        </div>
+        
+        <div class="recommendations">
+            <h2>Personalized Recommendations</h2>
+            <div id="recommendations-list">
+                <!-- Recommendations will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Goals Section -->
+        <div class="card goals-section" id="goals-section" style="display: none;">
+            <h2>Environmental Goals</h2>
+            <div class="goals-container" id="goals-container">
+                <!-- Goals will be populated by JavaScript -->
+            </div>
+            <button class="btn btn-primary" id="add-goal-btn">Add New Goal</button>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="card tips-section" id="tips-section" style="display: none;">
+            <h2>Eco-Friendly Tips</h2>
+            <div class="tips-container" id="tips-container">
+                <!-- Tips will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Activity Modal -->
+    <div class="modal" id="activity-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Activity</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <form id="activity-form">
+                <div class="form-group">
+                    <label for="activity-type">Activity Type</label>
+                    <select id="activity-type" required>
+                        <option value="">Select a category</option>
+                        <option value="transport">Transportation</option>
+                        <option value="energy">Energy Usage</option>
+                        <option value="food">Food Consumption</option>
+                        <option value="shopping">Shopping</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="activity-detail">Activity Detail</label>
+                    <select id="activity-detail" required>
+                        <option value="">Select specific activity</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" id="amount" step="0.01" min="0" required placeholder="Enter amount">
+                </div>
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn" id="cancel-btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Activity</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Goal Modal -->
+    <div class="modal" id="goal-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Set New Goal</h2>
+                <button class="close-btn" id="close-goal-btn">&times;</button>
+            </div>
+            <form id="goal-form">
+                <div class="form-group">
+                    <label for="goal-type">Goal Type</label>
+                    <select id="goal-type" required>
+                        <option value="">Select goal type</option>
+                        <option value="reduce_emissions">Reduce Emissions</option>
+                        <option value="energy_saving">Energy Saving</option>
+                        <option value="transport_change">Transportation Change</option>
+                        <option value="diet_change">Diet Change</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="goal-target">Target (kg CO2)</label>
+                    <input type="number" id="goal-target" step="0.1" min="0" required placeholder="Enter target reduction">
+                </div>
+                <div class="form-group">
+                    <label for="goal-deadline">Deadline</label>
+                    <input type="date" id="goal-deadline" required>
+                </div>
+                <div class="form-group">
+                    <label for="goal-description">Description</label>
+                    <textarea id="goal-description" required placeholder="Describe your goal"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn" id="cancel-goal-btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Set Goal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="personal_proj.js"></script>
+</body>
+</html>
